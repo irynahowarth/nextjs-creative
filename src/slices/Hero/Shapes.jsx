@@ -39,9 +39,46 @@ function Geometries() {
       r: 0.3,
       geometry: new THREE.IcosahedronGeometry(3), // Gem
     },
+    {
+      position: [1, -0.75, 4],
+      r: 0.4,
+      geometry: new THREE.CapsuleGeometry(0.5, 1.6, 2, 16), // Pill
+    },
+    {
+      position: [-1.4, 2, -4],
+      r: 0.6,
+      geometry: new THREE.DodecahedronGeometry(1.5), // Football
+    },
+    {
+      position: [-0.8, -0.75, 5],
+      r: 0.5,
+      geometry: new THREE.TorusGeometry(0.6, 0.25, 16, 32), // Donut
+    },
+    {
+      position: [1.6, 1.6, -4],
+      r: 0.7,
+      geometry: new THREE.OctahedronGeometry(1.5), //Octagon
+    },
   ];
 
-  const materials = [new THREE.MeshNormalMaterial()];
+  const materials = [
+    new THREE.MeshNormalMaterial(),
+    new THREE.MeshStandardMaterial({ color: 0x55efc4, roughness: 0 }),
+    new THREE.MeshStandardMaterial({ color: 0x00cec9, roughness: 0.3 }),
+    new THREE.MeshStandardMaterial({ color: 0xa29bfe, roughness: 0.7 }),
+    new THREE.MeshStandardMaterial({
+      color: 0xfd79a8,
+      roughness: 0.1,
+      metalness: 0.8,
+    }),
+    new THREE.MeshStandardMaterial({ color: 0xd63031, roughness: 0.2 }),
+    new THREE.MeshStandardMaterial({
+      color: 0xffeaa7,
+      roughness: 0.1,
+      metalness: 0.5,
+    }),
+    new THREE.MeshStandardMaterial({ color: 0xe17055, roughness: 0.4 }),
+  ];
 
   return geometries.map(({ position, r, geometry }) => (
     <Geometry
@@ -75,7 +112,7 @@ function Geometry({ r, position, geometry, materials }) {
       ease: "elastic.out(1, 0.3)",
       yoyo: true,
     });
-    mesh.materials = getRandomMaterial();
+    mesh.material = getRandomMaterial();
   }
 
   const handlePointerOver = () => {
