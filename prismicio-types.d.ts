@@ -69,7 +69,7 @@ export type HomepageDocument<Lang extends string = string> =
     Lang
   >;
 
-type PageDocumentDataSlicesSlice = RichTextSlice;
+type PageDocumentDataSlicesSlice = BiographySlice;
 
 /**
  * Content for Page documents
@@ -301,6 +301,91 @@ export type AllDocumentTypes =
   | SettingsDocument;
 
 /**
+ * Primary content in *Biography → Primary*
+ */
+export interface BiographySliceDefaultPrimary {
+  /**
+   * Heading field in *Biography → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: biography.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Description field in *Biography → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: biography.primary.description
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * Button Link field in *Biography → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: biography.primary.button_link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  button_link: prismic.LinkField;
+
+  /**
+   * Button Text field in *Biography → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: biography.primary.button_text
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  button_text: prismic.KeyTextField;
+
+  /**
+   * Avatar field in *Biography → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: biography.primary.avatar
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  avatar: prismic.ImageField<never>;
+}
+
+/**
+ * Default variation for Biography Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type BiographySliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<BiographySliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Biography*
+ */
+type BiographySliceVariation = BiographySliceDefault;
+
+/**
+ * Biography Shared Slice
+ *
+ * - **API ID**: `biography`
+ * - **Description**: Biography
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type BiographySlice = prismic.SharedSlice<
+  "biography",
+  BiographySliceVariation
+>;
+
+/**
  * Primary content in *Hero → Primary*
  */
 export interface HeroSliceDefaultPrimary {
@@ -427,6 +512,10 @@ declare module "@prismicio/client" {
       SettingsDocumentData,
       SettingsDocumentDataNavItemItem,
       AllDocumentTypes,
+      BiographySlice,
+      BiographySliceDefaultPrimary,
+      BiographySliceVariation,
+      BiographySliceDefault,
       HeroSlice,
       HeroSliceDefaultPrimary,
       HeroSliceVariation,
