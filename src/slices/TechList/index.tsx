@@ -8,21 +8,21 @@ import { MdCircle } from "react-icons/md";
 import { gsap } from 'gsap'
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger)
 
 /**
  * Props for `TechList`.
- */
+*/
 export type TechListProps = SliceComponentProps<Content.TechListSlice>;
 
 /**
  * Component for "TechList" Slices.
- */
+*/
 const TechList = ({ slice }: TechListProps): JSX.Element => {
-
+  
   const component = useRef(null)
-
+  
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger)
     let ctx = gsap.context(() => {
     
       const tl = gsap.timeline({
