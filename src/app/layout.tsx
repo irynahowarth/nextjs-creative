@@ -3,6 +3,7 @@ import {Urbanist} from 'next/font/google'
 import { repositoryName } from "@/prismicio";
 import './globals.css'
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const urbanist = Urbanist({subsets:['latin']})
 
@@ -16,6 +17,7 @@ export default function RootLayout({
       <body className={urbanist.className}>
         <Header/>
         {children}
+        <Footer />
       </body>
         <PrismicPreview repositoryName={repositoryName} />
     </html>
