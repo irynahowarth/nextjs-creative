@@ -6,6 +6,8 @@ import React, { useEffect } from 'react';
 import { useRef, useState } from 'react'
 import { MdArrowOutward } from 'react-icons/md';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 
 type ContentListProps = {
   items: Content.BlogPostDocument[] | Content.ProjectDocument[];
@@ -18,10 +20,38 @@ export default function ContentList({ items, contentType, fallbackItemImage, vie
 
   const container = useRef(null)
   const revealRef = useRef(null)
+  const itemsRef = useRef<Array<HTMLLIElement | null>>([])
   const [currentItem, setCurrentItem] = useState<null | number>(null)
   
   const urlPrefix = contentType === 'Blog' ? '/blog' : '/project'
   const lastMousePos = useRef({x:0,y:0})
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger)
+    let ctx = gsap.context(() => {
+      itemsRef.current.forEach((item) => {
+        gsap.fromTo(item,
+          {
+            opacity: 0,
+            y: 20
+          }, 
+          {
+            opacity: 1, 
+            y: 0,
+            duration: 1.3,
+            ease: 'elastic.out(1.0.3)',
+            scrollTrigger: {
+              trigger: item,
+              start: 'top bottom-=100px',
+              end: 'bottom center',
+              toggleActions: 'play none none none'
+            }
+        }
+        )
+      })
+      return ()=> ctx.revert()
+    }, container)
+  },[])
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -59,12 +89,11 @@ export default function ContentList({ items, contentType, fallbackItemImage, vie
     }
   },[currentItem])
 
-
   
   const contentImages = items.map((item) => {
     const image = isFilled.image(item.data.hover_image)
-      ? item.data.hover_image
-      : fallbackItemImage
+    ? item.data.hover_image
+    : fallbackItemImage
     
     return asImageSrc(image, {
       fit: 'crop',
@@ -73,7 +102,15 @@ export default function ContentList({ items, contentType, fallbackItemImage, vie
       exp: -10
     })
   })
-
+  
+  //Images preloading
+  useEffect(() => {
+    contentImages.forEach((url) => {
+      if (!url) return;
+      const img = new Image();
+      img.src = url;
+    })
+  },[contentImages])
   
 
   const onMouseEnter = (index:number) => {
@@ -96,7 +133,8 @@ export default function ContentList({ items, contentType, fallbackItemImage, vie
             <li
               key={index}
               className='list-item opacity-0f'
-              onMouseEnter={()=>onMouseEnter(index)}
+              onMouseEnter={() => onMouseEnter(index)}
+              ref={(el)=>(itemsRef.current[index]=el)}
             >
           <Link
             href={urlPrefix + '/' + item.uid}
