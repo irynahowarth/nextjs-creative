@@ -168,6 +168,7 @@ export type HomepageDocument<Lang extends string = string> =
   >;
 
 type PageDocumentDataSlicesSlice =
+  | ExperienceSlice
   | ImageBlockSlice
   | ContentIndexSlice
   | TechListSlice
@@ -673,6 +674,63 @@ export type ContentIndexSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *Experience → Primary*
+ */
+export interface ExperienceSliceDefaultPrimary {
+  /**
+   * Heading field in *Experience → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: experience.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * experiences field in *Experience → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: experience.primary.experiences[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  experiences: prismic.GroupField<
+    Simplify<ExperienceDocumentDataExperiencesItem>
+  >;
+}
+
+/**
+ * Default variation for Experience Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ExperienceSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<ExperienceSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Experience*
+ */
+type ExperienceSliceVariation = ExperienceSliceDefault;
+
+/**
+ * Experience Shared Slice
+ *
+ * - **API ID**: `experience`
+ * - **Description**: Experience
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ExperienceSlice = prismic.SharedSlice<
+  "experience",
+  ExperienceSliceVariation
+>;
+
+/**
  * Primary content in *Hero → Primary*
  */
 export interface HeroSliceDefaultPrimary {
@@ -958,6 +1016,11 @@ declare module "@prismicio/client" {
       ContentIndexSliceDefaultPrimary,
       ContentIndexSliceVariation,
       ContentIndexSliceDefault,
+      ExperienceSlice,
+      ExperienceDocumentDataExperiencesItem,
+      ExperienceSliceDefaultPrimary,
+      ExperienceSliceVariation,
+      ExperienceSliceDefault,
       HeroSlice,
       HeroSliceDefaultPrimary,
       HeroSliceVariation,
