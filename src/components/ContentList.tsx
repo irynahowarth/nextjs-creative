@@ -23,7 +23,7 @@ export default function ContentList({ items, contentType, fallbackItemImage, vie
   const itemsRef = useRef<Array<HTMLLIElement | null>>([])
   const [currentItem, setCurrentItem] = useState<null | number>(null)
   
-  const urlPrefix = contentType === 'Blog' ? '/blog' : '/project'
+  const urlPrefix = contentType === 'Blog' ? '/blog' : '/projects'
   const lastMousePos = useRef({x:0,y:0})
 
   useEffect(() => {
